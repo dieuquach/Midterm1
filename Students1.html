@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Students1</title>
+</head>
+
+<body>
+    <!-- Giao dien -->
+    
+
+    <button type="button" onclick="addForm()">Add</button>
+    <button type="button" onclick="showForm()">Show</button>
+
+    <div id="addForm" hidden="true">
+            <input id="name" placeholder="name">
+            <input id="jsScore" placeholder="score of javascript">
+            <input id="androidScore" placeholder="score of android">
+            <!-- <input id="inputclass" placeholder="your class"> -->
+    
+            <select id="inputclass">
+                <option>PNV20A</option> 
+                <option>PNV20B</option>
+            </select>
+            <button type="button" onclick="add()">Submit</button>
+    
+        </div>
+
+    <table style="width:50%" id="showForm" hidden="true">
+        <thead>
+            <th>Name</th>
+            <th>jsScore</th>
+            <th>androidScore</th>
+            <th>class</th>
+            <th>Xep loai</th>
+        </thead>
+        <tbody id="show">
+        </tbody>
+    </table>
+
+    <!-- Function chay -->
+    <script>
+
+        // localStorage.setItem("students", JSON.stringify(students));
+        if (localStorage.getItem("students")) {
+            var listStudents = JSON.parse(localStorage.getItem("students"));
+            show();
+        } else {
+            var listStudents = []
+        }
+
+        function add() {
+            var name = document.getElementById("name").value;
+            var jsScore = parseFloat(document.getElementById("jsScore").value);
+            var androidScore = parseFloat(document.getElementById("androidScore").value);
+            // var inputclass = document.getElementById("inputclass").value;
+            var e = document.getElementById("inputclass");
+            var inputclass = e.options[e.selectedIndex].value;
+
+            listStudents.push({
+                name,
+                jsScore,
+                androidScore,
+                inputclass
+            })
+            localStorage.setItem("students", JSON.stringify(listStudents));
+
+            if (element.jsScore != null && element.androidScore != null) {
+                var average = (element.jsScore + element.androidScore) / 2;
+                averages.innerHTML = "Calculate the average score: " + average;
+                content.appendChild(averages);
+                    if (average > 8) {
+                        evaluate.innerHTML = "Very Good";
+                        evaluate.style.color = "black ";
+                        content.appendChild(evaluate);
+                    } else if (average > 7) {
+                        evaluate.innerHTML = "Very Good";
+                        evaluate.style.color = "green";
+                        content.appendChild(evaluate);
+                    } else {
+                        evaluate.innerHTML = "Normal";
+                        evaluate.style.color = "gray";
+                        content.appendChild(evaluate);
+                    }
+                }
+            show();
+        }
+
+        function show() {
+            var show = document.getElementById("show");
+            show.innerText = "";
+            listStudents.forEach((element, index) => {
+                var tr = document.createElement("tr");
+
+                var tdName = document.createElement("td");
+                tdName.innerText = element.name;
+
+                var tdJsScrore = document.createElement("td");
+                tdJsScrore.innerText = element.jsScore;
+
+                var tdAndroidScore = document.createElement("td");
+                tdAndroidScore.innerText = element.androidScore;
+
+                var tdClass = document.createElement("td");
+                tdClass.innerText = element.inputclass;
+
+                var button = document.createElement("button");
+                button.innerText = "Delete";
+                button.addEventListener("click", function () {
+                    del(index);
+                })
+
+                tr.appendChild(tdName);
+                tr.appendChild(tdJsScrore);
+                tr.appendChild(tdAndroidScore);
+                tr.appendChild(tdClass);
+                tr.appendChild(button);
+                show.appendChild(tr);
+            });
+        }
+        function del(index) {
+            listStudents.splice(index, 1);
+            localStorage.setItem("students", JSON.stringify(listStudents));
+            show();
+        }
+
+        function showForm() {
+            document.getElementById("showForm").removeAttribute("hidden");
+            document.getElementById("addForm").hidden = "true";
+        }
+
+        function addForm() {
+            document.getElementById("addForm").removeAttribute("hidden");
+            document.getElementById("showForm").hidden = "true";
+        }
+    </script>
+</body>
+
+</html>
